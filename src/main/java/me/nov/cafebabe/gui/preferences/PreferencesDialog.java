@@ -9,8 +9,7 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 
-import com.alee.laf.rootpane.WebDialog;
-
+import com.alee.laf.window.WebDialog;
 import me.nov.cafebabe.Cafebabe;
 import me.nov.cafebabe.translations.Translations;
 
@@ -19,9 +18,9 @@ public class PreferencesDialog extends WebDialog {
 
 	public PreferencesDialog() {
 		super(Cafebabe.gui, true);
-		this.setRound(5);
-		this.setShadeWidth(20);
-		this.setShowResizeCorner(false);
+//		this.setRound(5);
+//		this.setShadeWidth(20);
+//		this.setShowResizeCorner(false);
 		this.initBounds();
 		this.setTitle(Translations.get("Preferences"));
 		this.setIconImage(Cafebabe.gui.getIconImage());

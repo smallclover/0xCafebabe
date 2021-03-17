@@ -4,15 +4,16 @@
 [Cafebabe](https://github.com/GraxCode/Cafebabe)
 
 ## 类库
-JDK: AdoptOpenJDK 11.0.7.10
-WebLaf: 1.2.8(1.28)
-JGraphx: 3.4.1.3
-CFR: 0.146
++ JDK: AdoptOpenJDK 11.0.7.10
++ WebLaf: 1.2.13
++ JGraphx: 3.4.1.3
++ CFR: 0.146
 
 ## 改进
 + 引进Gradle来管理项目的类库 √
-+ 中文支持 x
-+ 图形类库升级（原项目1.2.8的WebLaf的类库与1.2.13的WebLaf之间的变动太大，许图之） x
++ 中文支持 √
++ 汉化 x  
++ 图形类库升级 √ （存在若干问题，修复中）
 + 其他类库升级 x
 + 功能改进 x
 

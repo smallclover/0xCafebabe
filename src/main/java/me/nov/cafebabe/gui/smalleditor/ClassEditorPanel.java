@@ -19,7 +19,7 @@ import javax.swing.JPanel;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.tree.ClassNode;
 
-import com.alee.extended.panel.WebButtonGroup;
+//import com.alee.extended.panel.WebButtonGroup;
 import com.alee.laf.button.WebToggleButton;
 import com.alee.laf.checkbox.WebCheckBox;
 import com.alee.laf.combobox.WebComboBox;
@@ -40,7 +40,7 @@ public class ClassEditorPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
 	private ClassNode clazz;
 	private WebTextField name;
-	private WebButtonGroup access;
+//	private WebButtonGroup access;
 	private WebComboBox version;
 	private WebTextField superName;
 	private WebTextField signature;
@@ -62,27 +62,27 @@ public class ClassEditorPanel extends JPanel {
 		nameLabel.setDisplayedMnemonic('N');
 		nameLabel.setLabelFor(name);
 
-		access = accessToggleGroup();
-		Listeners.addMouseReleasedListener(access, () -> {
-			int acc = clazz.access; // do not lose old access
-			for (Component c : access.getComponents()) {
-				WebToggleButton tb = (WebToggleButton) c;
-				try {
-					int accessInt = Opcodes.class.getField("ACC_" + tb.getToolTipText().toUpperCase()).getInt(null);
-					if (tb.isSelected()) {
-						acc |= accessInt;
-					} else {
-						acc &= ~accessInt;
-					}
-				} catch (Exception e1) {
-					e1.printStackTrace();
-				}
-			}
-			clazz.access = acc;
-		}, true);
+//		access = accessToggleGroup();
+//		Listeners.addMouseReleasedListener(access, () -> {
+//			int acc = clazz.access; // do not lose old access
+//			for (Component c : access.getComponents()) {
+//				WebToggleButton tb = (WebToggleButton) c;
+//				try {
+//					int accessInt = Opcodes.class.getField("ACC_" + tb.getToolTipText().toUpperCase()).getInt(null);
+//					if (tb.isSelected()) {
+//						acc |= accessInt;
+//					} else {
+//						acc &= ~accessInt;
+//					}
+//				} catch (Exception e1) {
+//					e1.printStackTrace();
+//				}
+//			}
+//			clazz.access = acc;
+//		}, true);
 		JLabel accessLabel = new JLabel(Translations.get("Access:"));
 		accessLabel.setDisplayedMnemonic('A');
-		accessLabel.setLabelFor(access);
+//		accessLabel.setLabelFor(access);
 		version = new WebComboBox(new Integer[] { 49, 50, 51, 52, 53, 54, 55, 56, 57, 58 });
 		version.addActionListener(l -> {
 			clazz.version = (int) version.getSelectedItem();
@@ -184,7 +184,7 @@ public class ClassEditorPanel extends JPanel {
 		gbc.gridwidth = 1;
 		this.add(accessLabel, gbc);
 		gbc.gridwidth = GridBagConstraints.REMAINDER;
-		this.add(access, gbc);
+//		this.add(access, gbc);
 		gbc.gridy++;
 		this.add(WebLaF.createSeparator(), gbc);
 		gbc.gridy++;
@@ -244,60 +244,60 @@ public class ClassEditorPanel extends JPanel {
 
 	}
 
-	private WebButtonGroup accessToggleGroup() {
-		// do not change tooltips
-		WebToggleButton private_ = new WebToggleButton(MethodListCellRenderer.pri);
-		private_.setToolTipText("private");
-		WebToggleButton public_ = new WebToggleButton(MethodListCellRenderer.pub);
-		public_.setToolTipText("public");
-		WebToggleButton protected_ = new WebToggleButton(MethodListCellRenderer.pro);
-		protected_.setToolTipText("protected");
-		WebToggleButton abstract_ = new WebToggleButton(MethodListCellRenderer.abs);
-		abstract_.setToolTipText("abstract");
-		WebToggleButton final_ = new WebToggleButton(MethodListCellRenderer.fin);
-		final_.setToolTipText("final");
-		WebToggleButton synthetic_ = new WebToggleButton(MethodListCellRenderer.synth);
-		synthetic_.setToolTipText("synthetic");
-
-		private_.addActionListener(l -> {
-			public_.setSelected(false);
-			protected_.setSelected(false);
-		});
-		public_.addActionListener(l -> {
-			protected_.setSelected(false);
-			private_.setSelected(false);
-		});
-		protected_.addActionListener(l -> {
-			public_.setSelected(false);
-			private_.setSelected(false);
-		});
-		WebButtonGroup accessGroup = new WebButtonGroup(false, private_, public_, protected_, abstract_, final_,
-				synthetic_);
-		accessGroup.setButtonsDrawFocus(false);
-
-		return accessGroup;
-	}
+//	private WebButtonGroup accessToggleGroup() {
+//		// do not change tooltips
+//		WebToggleButton private_ = new WebToggleButton(MethodListCellRenderer.pri);
+//		private_.setToolTipText("private");
+//		WebToggleButton public_ = new WebToggleButton(MethodListCellRenderer.pub);
+//		public_.setToolTipText("public");
+//		WebToggleButton protected_ = new WebToggleButton(MethodListCellRenderer.pro);
+//		protected_.setToolTipText("protected");
+//		WebToggleButton abstract_ = new WebToggleButton(MethodListCellRenderer.abs);
+//		abstract_.setToolTipText("abstract");
+//		WebToggleButton final_ = new WebToggleButton(MethodListCellRenderer.fin);
+//		final_.setToolTipText("final");
+//		WebToggleButton synthetic_ = new WebToggleButton(MethodListCellRenderer.synth);
+//		synthetic_.setToolTipText("synthetic");
+//
+//		private_.addActionListener(l -> {
+//			public_.setSelected(false);
+//			protected_.setSelected(false);
+//		});
+//		public_.addActionListener(l -> {
+//			protected_.setSelected(false);
+//			private_.setSelected(false);
+//		});
+//		protected_.addActionListener(l -> {
+//			public_.setSelected(false);
+//			private_.setSelected(false);
+//		});
+//		WebButtonGroup accessGroup = new WebButtonGroup(false, private_, public_, protected_, abstract_, final_,
+//				synthetic_);
+//		accessGroup.setButtonsDrawFocus(false);
+//
+//		return accessGroup;
+//	}
 
 	public void editClass(ClassNode clazz) {
 		this.clazz = clazz;
 		this.name.setText(clazz.name);
-		for (Field f : Opcodes.class.getDeclaredFields()) {
-			try {
-				if (f.getName().startsWith("ACC_")) {
-					int acc = f.getInt(null);
-					String accName = f.getName().substring(4).toLowerCase();
-					for (Component c : access.getComponents()) {
-						WebToggleButton tb = (WebToggleButton) c;
-						if (tb.getToolTipText().equals(accName)) {
-							tb.setSelected((clazz.access & acc) != 0);
-							break;
-						}
-					}
-				}
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
+//		for (Field f : Opcodes.class.getDeclaredFields()) {
+//			try {
+//				if (f.getName().startsWith("ACC_")) {
+//					int acc = f.getInt(null);
+//					String accName = f.getName().substring(4).toLowerCase();
+//					for (Component c : access.getComponents()) {
+//						WebToggleButton tb = (WebToggleButton) c;
+//						if (tb.getToolTipText().equals(accName)) {
+//							tb.setSelected((clazz.access & acc) != 0);
+//							break;
+//						}
+//					}
+//				}
+//			} catch (Exception e) {
+//				e.printStackTrace();
+//			}
+//		}
 		this.superName.setText(clazz.superName);
 		this.sourceFile.setText(clazz.sourceFile);
 		this.version.setSelectedItem(clazz.version);

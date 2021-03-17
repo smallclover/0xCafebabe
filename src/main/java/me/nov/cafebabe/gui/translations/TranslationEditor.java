@@ -10,10 +10,10 @@ import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 import javax.swing.table.DefaultTableModel;
 
-import com.alee.laf.rootpane.WebDialog;
 import com.alee.laf.scroll.WebScrollPane;
 import com.alee.laf.table.WebTable;
 
+import com.alee.laf.window.WebDialog;
 import me.nov.cafebabe.Cafebabe;
 import me.nov.cafebabe.translations.Translations;
 
@@ -22,9 +22,9 @@ public class TranslationEditor extends WebDialog {
 
 	public TranslationEditor() {
 		super(Cafebabe.gui, true);
-		this.setRound(5);
-		this.setShadeWidth(20);
-		this.setShowResizeCorner(false);
+//		this.setRound(5);
+//		this.setShadeWidth(20);
+//		this.setShowResizeCorner(false);
 		this.initBounds();
 		this.setTitle(Translations.get("Translation editor"));
 		this.setIconImage(Cafebabe.gui.getIconImage());

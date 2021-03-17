@@ -38,9 +38,9 @@ public class Editor extends JFrame {
 		this.setAlwaysOnTop(true);
 		this.pane = new WebDocumentPane();
 		pane.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 12));
-		pane.setCloseable(true);
+//		pane.setCloseable(true);
 		pane.setTabMenuEnabled(true);
-		pane.setWebColoredBackground(true);
+//		pane.setWebColoredBackground(true);
 		pane.addDocumentListener(new DocumentListener<DocumentData>() {
 
 			@Override
@@ -60,12 +60,12 @@ public class Editor extends JFrame {
 				setTitle(arg0.getTitle());
 			}
 
-//			@Override
-//			public void selected(DocumentData arg0, PaneData<DocumentData> arg1, int arg2) {
-//				setTitle(arg0.getTitle());
-//			}
+			@Override
+			public void selected(DocumentData arg0, PaneData<DocumentData> arg1, int arg2) {
+				setTitle(arg0.getTitle());
+			}
 		});
-		pane.setUndecorated(false);
+//		pane.setUndecorated(false);
 		this.add(pane, BorderLayout.CENTER);
 		this.setJMenuBar(createMenu());
 

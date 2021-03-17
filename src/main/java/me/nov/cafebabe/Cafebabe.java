@@ -1,11 +1,10 @@
 package me.nov.cafebabe;
 
 import com.alee.laf.WebLookAndFeel;
-import com.alee.laf.menu.MenuBarStyle;
 import com.alee.laf.menu.WebMenu;
 import com.alee.laf.menu.WebMenuBar;
 import com.alee.laf.menu.WebMenuItem;
-import com.alee.laf.rootpane.WebFrame;
+import com.alee.laf.window.WebFrame;
 import me.nov.cafebabe.gui.*;
 import me.nov.cafebabe.gui.editor.Editor;
 import me.nov.cafebabe.gui.preferences.PreferencesDialog;
@@ -18,6 +17,7 @@ import me.nov.cafebabe.translations.Translations;
 import javax.swing.*;
 import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.plaf.FontUIResource;
 import java.awt.*;
 import java.awt.event.AWTEventListener;
 import java.awt.event.MouseEvent;
@@ -93,9 +93,9 @@ public class Cafebabe extends WebFrame {
 			}
 		}, AWTEvent.MOUSE_MOTION_EVENT_MASK + AWTEvent.MOUSE_EVENT_MASK);
 
-		this.setRound(5);
-		this.setShadeWidth(20);
-		this.setShowResizeCorner(false);
+//		this.setRound(5);
+//		this.setShadeWidth(20);
+//		this.setShowResizeCorner(false);
 		// 图标
 		this.setIconImage(
 				Toolkit.getDefaultToolkit().getImage(MethodListCellRenderer.class.getResource("/icon.png")));
@@ -118,6 +118,7 @@ public class Cafebabe extends WebFrame {
 		load.setAccelerator(KeyStroke.getKeyStroke('N', Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()));
 		// 文件选择窗口
 		load.addActionListener(l -> {
+			// 使用指定的的File作为路径来创建JFileChooser
 			JFileChooser jfc = new JFileChooser(new File(System.getProperty("user.home") + File.separator + "Desktop"));
 			jfc.setAcceptAllFileFilterUsed(false);
 			jfc.setFileFilter(new FileNameExtensionFilter("Java Package (*.jar)", "jar"));
@@ -139,6 +140,8 @@ public class Cafebabe extends WebFrame {
 			jfc.setAcceptAllFileFilterUsed(false);
 			jfc.setSelectedFile(tree.inputFile);
 			jfc.setDialogTitle(Translations.get("Save jar file"));
+
+			// 设置文件过滤器，过滤jar
 			jfc.setFileFilter(new FileNameExtensionFilter("Java Package (*.jar)", "jar"));
 			int result = jfc.showSaveDialog(this);
 			if (result == JFileChooser.APPROVE_OPTION) {
@@ -210,14 +213,16 @@ public class Cafebabe extends WebFrame {
 				}
 			}
 			new Translations(); //load translations
+			// 1.2.8字体是硬编码，所以需要替换设置
+			// WebLookAndFeel.globalControlFont = new FontUIResource("隶书", 0, 12);
 			WebLookAndFeel.install();
 			System.setProperty("file.encoding", "UTF-8");
 			Field charset = Charset.class.getDeclaredField("defaultCharset");
 			charset.setAccessible(true);
 			charset.set(null, null);
 			Settings.loadSettings();
-			WebLookAndFeel.setDecorateFrames(decorated);
-			WebLookAndFeel.setDecorateDialogs(decorated);
+//			WebLookAndFeel.setDecorateFrames(decorated);
+//			WebLookAndFeel.setDecorateDialogs(decorated);
 		} catch (Throwable t) {
 			t.printStackTrace();
 		}

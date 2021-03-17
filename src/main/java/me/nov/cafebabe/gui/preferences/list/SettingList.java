@@ -4,6 +4,7 @@ import java.awt.Font;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.List;
 
 import javax.swing.ListSelectionModel;
 
@@ -18,11 +19,11 @@ public class SettingList extends WebCheckBoxList {
 	private static final long serialVersionUID = 1L;
 
 	@SuppressWarnings("unchecked")
-	public SettingList(Setting... settings) {
+	public SettingList(List<Setting> settings) {
 		this.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 12));
 		CheckBoxListModel clm = new CheckBoxListModel();
 		for (Setting setting : settings) {
-			clm.addCheckBoxElement(new SettingNode(setting), setting.get());
+			clm.add(new CheckBoxCellData<>(new SettingNode(setting), setting.get()));
 		}
 		this.setModel(clm);
 		this.repaint();

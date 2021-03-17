@@ -11,9 +11,8 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 
+import com.alee.laf.window.WebDialog;
 import org.objectweb.asm.tree.AbstractInsnNode;
-
-import com.alee.laf.rootpane.WebDialog;
 
 import me.nov.cafebabe.Cafebabe;
 import me.nov.cafebabe.translations.Translations;
@@ -25,9 +24,9 @@ public class OpcodeChooserDialog extends WebDialog {
 
 	public OpcodeChooserDialog(AbstractInsnNode ain) {
 		super(Cafebabe.gui, true);
-		this.setRound(5);
-		this.setShadeWidth(20);
-		this.setShowResizeCorner(false);
+//		this.setRound(5);
+//		this.setShadeWidth(20);
+//		this.setShowResizeCorner(false);
 		this.opcode = ain.getOpcode();
 		this.initBounds();
 		this.setTitle(Translations.get("Choose an opcode"));

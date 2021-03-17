@@ -7,8 +7,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.Border;
 
-import com.alee.extended.statusbar.WebMemoryBar;
-
+import com.alee.extended.memorybar.WebMemoryBar;
 import me.nov.cafebabe.Cafebabe;
 
 public class HelpBar extends JPanel {
@@ -23,7 +22,7 @@ public class HelpBar extends JPanel {
 		this.resetText();
 		this.add(label, BorderLayout.WEST);
 		WebMemoryBar mb = new WebMemoryBar();
-		mb.setShowMaximumMemory(false);
+//		mb.setShowMaximumMemory(false);
 		mb.setFocusable(false);
 		this.add(mb, BorderLayout.EAST);
 	}

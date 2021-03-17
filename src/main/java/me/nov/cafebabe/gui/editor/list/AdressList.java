@@ -60,8 +60,8 @@ public class AdressList extends JList<String> {
 		ListUI ui = this.getUI();
 		if (ui instanceof WebListUI) {
 			WebListUI wlui = (WebListUI) ui;
-			wlui.setHighlightRolloverCell(false);
-			wlui.setDecorateSelection(false);
+//			wlui.setHighlightRolloverCell(false);
+//			wlui.setDecorateSelection(false);
 		}
 	}
 

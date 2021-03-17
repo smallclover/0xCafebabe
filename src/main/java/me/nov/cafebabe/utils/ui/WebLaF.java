@@ -12,10 +12,11 @@ import javax.swing.SwingConstants;
 import javax.swing.border.EtchedBorder;
 
 import com.alee.extended.image.WebImage;
+import com.alee.extended.overlay.WebOverlay;
 import com.alee.extended.panel.GroupPanel;
-import com.alee.extended.panel.WebOverlay;
+//import com.alee.extended.panel.WebOverlay;
 import com.alee.laf.WebLookAndFeel;
-import com.alee.managers.language.data.TooltipWay;
+//import com.alee.managers.language.data.TooltipWay;
 import com.alee.managers.tooltip.TooltipManager;
 
 public class WebLaF {
@@ -27,11 +28,11 @@ public class WebLaF {
 
 	public static GroupPanel createInfoLabel(JLabel nameLabel, String overlayText) {
 		WebOverlay overlayPanel = new WebOverlay();
-		overlayPanel.setComponent(nameLabel);
+//		overlayPanel.setComponent(nameLabel);
 		WebImage overlay = new WebImage(info);
-		TooltipManager.setTooltip(overlay, overlayText, TooltipWay.trailing, 0);
-		overlayPanel.addOverlay(overlay, SwingConstants.TRAILING, SwingConstants.TOP);
-		overlayPanel.setComponentMargin(0, 0, 0, overlay.getPreferredSize().width);
+//		TooltipManager.setTooltip(overlay, overlayText, TooltipWay.trailing, 0);
+//		overlayPanel.addOverlay(overlay, SwingConstants.TRAILING, SwingConstants.TOP);
+//		overlayPanel.setComponentMargin(0, 0, 0, overlay.getPreferredSize().width);
 		return new GroupPanel(overlayPanel);
 	}
 
@@ -45,10 +46,10 @@ public class WebLaF {
   public static void fixUnicodeSupport() {
     WebLookAndFeel.globalControlFont = fixFont(WebLookAndFeel.globalControlFont);
     WebLookAndFeel.globalTooltipFont = fixFont(WebLookAndFeel.globalTooltipFont);
-    WebLookAndFeel.globalAlertFont = fixFont(WebLookAndFeel.globalAlertFont);
+//    WebLookAndFeel.globalAlertFont = fixFont(WebLookAndFeel.globalAlertFont);
     WebLookAndFeel.globalMenuFont = fixFont(WebLookAndFeel.globalMenuFont);
-    WebLookAndFeel.globalAcceleratorFont = fixFont(WebLookAndFeel.globalAcceleratorFont);
-    WebLookAndFeel.globalTitleFont = fixFont(WebLookAndFeel.globalTitleFont);
+//    WebLookAndFeel.globalAcceleratorFont = fixFont(WebLookAndFeel.globalAcceleratorFont);
+//    WebLookAndFeel.globalTitleFont = fixFont(WebLookAndFeel.globalTitleFont);
     WebLookAndFeel.globalTextFont = fixFont(WebLookAndFeel.globalTextFont);
   }
 

@@ -20,7 +20,7 @@ import javax.swing.JScrollPane;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.tree.MethodNode;
 
-import com.alee.extended.panel.WebButtonGroup;
+//import com.alee.extended.panel.WebButtonGroup;
 import com.alee.laf.button.WebToggleButton;
 import com.alee.laf.checkbox.WebCheckBox;
 import com.alee.laf.text.WebTextField;
@@ -43,7 +43,7 @@ public class MethodEditorPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
 	private MethodNode method;
 	private WebTextField name;
-	private WebButtonGroup access;
+//	private WebButtonGroup access;
 	private WebTextField arguments;
 	private WebTextField returns;
 	private WebTextField signature;
@@ -64,27 +64,27 @@ public class MethodEditorPanel extends JPanel {
 		nameLabel.setDisplayedMnemonic('N');
 		nameLabel.setLabelFor(name);
 
-		access = accessToggleGroup();
-		Listeners.addMouseReleasedListener(access, () -> {
-			int acc = method.access; // do not lose old access
-			for (Component c : access.getComponents()) {
-				WebToggleButton tb = (WebToggleButton) c;
-				try {
-					int accessInt = Opcodes.class.getField("ACC_" + tb.getToolTipText().toUpperCase()).getInt(null);
-					if (tb.isSelected()) {
-						acc |= accessInt;
-					} else {
-						acc &= ~accessInt;
-					}
-				} catch (Exception e1) {
-					e1.printStackTrace();
-				}
-			}
-			method.access = acc;
-		}, true);
+//		access = accessToggleGroup();
+//		Listeners.addMouseReleasedListener(access, () -> {
+//			int acc = method.access; // do not lose old access
+//			for (Component c : access.getComponents()) {
+//				WebToggleButton tb = (WebToggleButton) c;
+//				try {
+//					int accessInt = Opcodes.class.getField("ACC_" + tb.getToolTipText().toUpperCase()).getInt(null);
+//					if (tb.isSelected()) {
+//						acc |= accessInt;
+//					} else {
+//						acc &= ~accessInt;
+//					}
+//				} catch (Exception e1) {
+//					e1.printStackTrace();
+//				}
+//			}
+//			method.access = acc;
+//		}, true);
 		JLabel accessLabel = new JLabel(Translations.get("Access:"));
 		accessLabel.setDisplayedMnemonic('A');
-		accessLabel.setLabelFor(access);
+//		accessLabel.setLabelFor(access);
 
 		arguments = new WebTextField(20);
 		Listeners.addChangeListener(arguments, l -> {
@@ -189,7 +189,7 @@ public class MethodEditorPanel extends JPanel {
 		gbc.gridwidth = 1;
 		this.add(accessLabel, gbc);
 		gbc.gridwidth = GridBagConstraints.REMAINDER;
-		this.add(access, gbc);
+//		this.add(access, gbc);
 		gbc.gridy++;
 		this.add(WebLaF.createSeparator(), gbc);
 		gbc.gridy++;
@@ -247,66 +247,66 @@ public class MethodEditorPanel extends JPanel {
 		method.desc += Descriptors.displayTypeToDesc(ret.trim());
 	}
 
-	private WebButtonGroup accessToggleGroup() {
-		// do not change tooltips
-		WebToggleButton private_ = new WebToggleButton(MethodListCellRenderer.pri);
-		private_.setToolTipText("private");
-		WebToggleButton public_ = new WebToggleButton(MethodListCellRenderer.pub);
-		public_.setToolTipText("public");
-		WebToggleButton protected_ = new WebToggleButton(MethodListCellRenderer.pro);
-		protected_.setToolTipText("protected");
-		WebToggleButton static_ = new WebToggleButton(MethodListCellRenderer.stat);
-		static_.setToolTipText("static");
-		WebToggleButton final_ = new WebToggleButton(MethodListCellRenderer.fin);
-		final_.setToolTipText("final");
-		WebToggleButton abstract_ = new WebToggleButton(MethodListCellRenderer.abs);
-		abstract_.setToolTipText("abstract");
-		WebToggleButton native_ = new WebToggleButton(MethodListCellRenderer.nat);
-		native_.setToolTipText("native");
-		WebToggleButton synchronized_ = new WebToggleButton(MethodListCellRenderer.syn);
-		synchronized_.setToolTipText("synchronized");
-		WebToggleButton synthetic_ = new WebToggleButton(MethodListCellRenderer.synth);
-		synthetic_.setToolTipText("synthetic");
-
-		private_.addActionListener(l -> {
-			public_.setSelected(false);
-			protected_.setSelected(false);
-		});
-		public_.addActionListener(l -> {
-			protected_.setSelected(false);
-			private_.setSelected(false);
-		});
-		protected_.addActionListener(l -> {
-			public_.setSelected(false);
-			private_.setSelected(false);
-		});
-		WebButtonGroup accessGroup = new WebButtonGroup(false, private_, public_, protected_, static_, final_, abstract_,
-				native_, synchronized_, synthetic_);
-		accessGroup.setButtonsDrawFocus(false);
-
-		return accessGroup;
-	}
+//	private WebButtonGroup accessToggleGroup() {
+//		// do not change tooltips
+//		WebToggleButton private_ = new WebToggleButton(MethodListCellRenderer.pri);
+//		private_.setToolTipText("private");
+//		WebToggleButton public_ = new WebToggleButton(MethodListCellRenderer.pub);
+//		public_.setToolTipText("public");
+//		WebToggleButton protected_ = new WebToggleButton(MethodListCellRenderer.pro);
+//		protected_.setToolTipText("protected");
+//		WebToggleButton static_ = new WebToggleButton(MethodListCellRenderer.stat);
+//		static_.setToolTipText("static");
+//		WebToggleButton final_ = new WebToggleButton(MethodListCellRenderer.fin);
+//		final_.setToolTipText("final");
+//		WebToggleButton abstract_ = new WebToggleButton(MethodListCellRenderer.abs);
+//		abstract_.setToolTipText("abstract");
+//		WebToggleButton native_ = new WebToggleButton(MethodListCellRenderer.nat);
+//		native_.setToolTipText("native");
+//		WebToggleButton synchronized_ = new WebToggleButton(MethodListCellRenderer.syn);
+//		synchronized_.setToolTipText("synchronized");
+//		WebToggleButton synthetic_ = new WebToggleButton(MethodListCellRenderer.synth);
+//		synthetic_.setToolTipText("synthetic");
+//
+//		private_.addActionListener(l -> {
+//			public_.setSelected(false);
+//			protected_.setSelected(false);
+//		});
+//		public_.addActionListener(l -> {
+//			protected_.setSelected(false);
+//			private_.setSelected(false);
+//		});
+//		protected_.addActionListener(l -> {
+//			public_.setSelected(false);
+//			private_.setSelected(false);
+//		});
+//		WebButtonGroup accessGroup = new WebButtonGroup(false, private_, public_, protected_, static_, final_, abstract_,
+//				native_, synchronized_, synthetic_);
+//		accessGroup.setButtonsDrawFocus(false);
+//
+//		return accessGroup;
+//	}
 
 	public void editMethod(MethodNode method) {
 		this.method = method;
 		this.name.setText(method.name);
-		for (Field f : Opcodes.class.getDeclaredFields()) {
-			try {
-				if (f.getName().startsWith("ACC_")) {
-					int acc = f.getInt(null);
-					String accName = f.getName().substring(4).toLowerCase();
-					for (Component c : access.getComponents()) {
-						WebToggleButton tb = (WebToggleButton) c;
-						if (tb.getToolTipText().equals(accName)) {
-							tb.setSelected((method.access & acc) != 0);
-							break;
-						}
-					}
-				}
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
+//		for (Field f : Opcodes.class.getDeclaredFields()) {
+//			try {
+//				if (f.getName().startsWith("ACC_")) {
+//					int acc = f.getInt(null);
+//					String accName = f.getName().substring(4).toLowerCase();
+//					for (Component c : access.getComponents()) {
+//						WebToggleButton tb = (WebToggleButton) c;
+//						if (tb.getToolTipText().equals(accName)) {
+//							tb.setSelected((method.access & acc) != 0);
+//							break;
+//						}
+//					}
+//				}
+//			} catch (Exception e) {
+//				e.printStackTrace();
+//			}
+//		}
 		this.arguments.setText(Descriptors.getDisplayTypeEditable(method.desc.split("\\)")[0].substring(1)));
 		this.returns.setText(Descriptors.getDisplayTypeEditable(method.desc.split("\\)")[1]));
 		if (method.signature != null) {
