@@ -31,6 +31,7 @@ public class Cafebabe extends WebFrame {
 	private static final long serialVersionUID = 1L;
 	public static final String title = "Cafebabe Editor Lite";
 	public static final String version = "0.1.2";
+	// 当前类的对象
 	public static Cafebabe gui;
 	public static File folder;
 
@@ -43,25 +44,35 @@ public class Cafebabe extends WebFrame {
 		gui = this;
 		setTitle(title + " " + version);
 		initBounds();
+		// 默认的关闭操作
 		this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		// 关闭操作绑定的事件
 		this.addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent we) {
+				// 关闭窗口操作提示
+				// 默认的父窗口即使Cafebabe
 				if (JOptionPane.showConfirmDialog(Cafebabe.this, Translations.get("Do you really want to exit?"),
 						Translations.get("Confirm"), JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+					// 选择【是】的场合关闭程序
 					Runtime.getRuntime().exit(0);
 				}
 			}
 		});
-		this.setAlwaysOnTop(true);
+		// 是否总是在其他程序的窗口之前（没有必要一直都在之前）
+		this.setAlwaysOnTop(false);
+		// 构造一个新的边框布局
 		setLayout(new BorderLayout());
 		this.setJMenuBar(initMenuBar());
+		// 变更日志面板
 		this.smallEditorPanel = new JScrollPane(new ChangelogPanel());
 		this.smallEditorPanel.getVerticalScrollBar().setUnitIncrement(16);
 		this.methods = new ClassMemberList();
 		this.tree = new ClassTree(methods);
+		// 左: tree 右上: methods 右下: smallEditorPanel
 		this.add(new OuterSplitPane(new JScrollPane(tree), new InnerSplitPane(new JScrollPane(methods), smallEditorPanel)),
 				BorderLayout.CENTER);
+		// 底栏
 		HelpBar hb = new HelpBar();
 		this.add(hb, BorderLayout.SOUTH);
 		Toolkit.getDefaultToolkit().addAWTEventListener(new AWTEventListener() {
@@ -81,21 +92,31 @@ public class Cafebabe extends WebFrame {
 				}
 			}
 		}, AWTEvent.MOUSE_MOTION_EVENT_MASK + AWTEvent.MOUSE_EVENT_MASK);
+
 		this.setRound(5);
 		this.setShadeWidth(20);
 		this.setShowResizeCorner(false);
+		// 图标
 		this.setIconImage(
 				Toolkit.getDefaultToolkit().getImage(MethodListCellRenderer.class.getResource("/icon.png")));
 	}
 
+	/**
+	 * 初始化菜单栏
+	 * @return
+	 */
 	private JMenuBar initMenuBar() {
 		WebMenuBar bar = new WebMenuBar();
-		bar.setUndecorated(false);
-		bar.setMenuBarStyle(MenuBarStyle.attached);
+		// 暂时看不出有什么作用，至少视觉效果是一致的（注释前后）
+//		bar.setUndecorated(false);
+//		bar.setMenuBarStyle(MenuBarStyle.attached);
 
+		// 一级菜单File
 		WebMenu file = new WebMenu(Translations.get("File"));
+		// 二级菜单Open jar file
 		WebMenuItem load = new WebMenuItem(Translations.get("Open jar file"));
-		load.setAccelerator(KeyStroke.getKeyStroke('N', Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
+		load.setAccelerator(KeyStroke.getKeyStroke('N', Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()));
+		// 文件选择窗口
 		load.addActionListener(l -> {
 			JFileChooser jfc = new JFileChooser(new File(System.getProperty("user.home") + File.separator + "Desktop"));
 			jfc.setAcceptAllFileFilterUsed(false);
@@ -106,8 +127,11 @@ public class Cafebabe extends WebFrame {
 				tree.onJarLoad(-1, input);
 			}
 		});
+
+
+		// 二级菜单Save jar file
 		WebMenuItem save = new WebMenuItem(Translations.get("Save jar file"));
-		save.setAccelerator(KeyStroke.getKeyStroke('S', Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
+		save.setAccelerator(KeyStroke.getKeyStroke('S', Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()));
 		save.addActionListener(l -> {
 			if (tree.inputFile == null)
 				return;
@@ -122,24 +146,36 @@ public class Cafebabe extends WebFrame {
 				tree.saveJar(output);
 			}
 		});
+
 		file.add(load);
 		file.add(save);
 		bar.add(file);
+
+		// 一级菜单Preferences
 		WebMenu preferences = new WebMenu(Translations.get("Preferences"));
+
+		// 二级菜单Edit preferences...
 		WebMenuItem editPrefs = new WebMenuItem(Translations.get("Edit preferences..."));
 		editPrefs.addActionListener(l -> {
 			new PreferencesDialog();
 		});
 		preferences.add(editPrefs);
+
+		// 二级菜单Translation editor...
 		WebMenuItem tranlations = new WebMenuItem(Translations.get("Translation editor..."));
 		tranlations.addActionListener(l -> {
 			new TranslationEditor();
 		});
 		preferences.add(tranlations);
 		bar.add(preferences);
+
+
 		return bar;
 	}
 
+	/**
+	 * 初始化主窗口
+	 */
 	private void initBounds() {
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		int width = (int) (screenSize.width * 0.3515625); // 675
@@ -162,6 +198,7 @@ public class Cafebabe extends WebFrame {
 	public static boolean decorated = true;
 	public static void main(String[] args) throws Exception {
 		try {
+			// C:\Users\xxxx 当前用户目录
 			folder = new File(System.getProperty("user.home"), ".cafebabe");
 			if (!folder.exists()) {
 				folder.mkdir();

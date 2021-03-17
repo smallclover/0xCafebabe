@@ -17,7 +17,6 @@ import me.nov.cafebabe.Cafebabe;
 import me.nov.cafebabe.gui.smalleditor.ChangelogPanel;
 import me.nov.cafebabe.utils.io.Scanning;
 import me.nov.cafebabe.utils.ui.WebLaF;
-import me.nov.cafebabe.utils.web.URLReader;
 
 public class Translations {
 	public static final HashMap<Integer, String> translations = new HashMap<>();
@@ -37,31 +36,6 @@ public class Translations {
 
 		translations.put(i.hashCode(), i);
 		return i;
-	}
-
-	@SuppressWarnings("unused")
-	@Deprecated
-	private static String translateGoogle(String i) {
-		String translation;
-		try {
-			translation = translate(i);
-			if (translation == null || translation.trim().length() < 3) {
-				return i;
-			}
-			translation = translation.substring(1, translation.length() - 1);
-			translations.put(i.hashCode(), translation);
-			return translation;
-		} catch (Exception e) {
-			return i;
-		}
-	}
-
-	@Deprecated
-	private static String translate(String i) throws IOException {
-		Matcher m = Pattern.compile("\"(.*?)\"")
-				.matcher(URLReader.getURLContent("https://translate.googleapis.com/translate_a/single?client=gtx&sl=eng&tl="
-						+ language + "&dt=t&q=" + URLEncoder.encode(i, "UTF-8")));
-		return m.find() ? m.group() : i;
 	}
 
 	public static void saveTranslations() {
