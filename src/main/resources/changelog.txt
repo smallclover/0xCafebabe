@@ -1,0 +1,40 @@
+<html>
+<h1>Changelog</hl>
+<hr>
+<h2>Version 0.1.2</h2>
+<p>More editor improvements, the most used opcodes and need functions are working now! Special nodes like invokedynamic or switches will be implemented later!</p>
+<br>
+<hr>
+<h2>Version 0.1.1</h2>
+<p>Editing now supports the most important instructions, reordering, inserting, copying, etc. Obfuscated jar files are not that much of a problem anymore (in terms of GUI) and some small bugs were corrected. Unicode characters should also be working by now.</p>
+<br>
+<hr>
+<h2>Version 0.1.0</h2>
+<p>Fully implemented the decompiler and some code-editing. Also made a new editor for translations, that you can use to make your own (or even for everybody)! You can also change cfr settings from the preferences page.</p>
+<br>
+<hr>
+<h2>Version 0.0.6</h2>
+<p>Added the old control flow graph, cfr decompiler and exit confirmation.</p>
+<br>
+<hr>
+<h2>Version 0.0.5</h2>
+<p>Changed the color scheme and made some slight ui adjustments. Also worked on instruction editing.</p>
+<br>
+<hr>
+<h2>Version 0.0.4</h2>
+<p>Added a mini control-flow connection line into the bytecode editor.</p>
+<br>
+<hr>
+<h2>Version 0.0.3</h2>
+<p>First bytecode editing implementation, not editable.</p>
+<br>
+<hr>
+<h2>Version 0.0.2</h2>
+<p>Implementation of FrameHack to avoid getCommonSuperClass troubles. By saving frames will automatically get regenerated. Cafebabe will ask if an unseen super class is unclear.</p>
+<br>
+<hr>
+<h2>Version 0.0.1</h2>
+<p>Overall implementation of the project. Some functionalities were adopted from JByteMod-Beta, mainly GUI-Elements. In comparison to JBM, this tool features multi-view now. The intention is to keep bytecode editing simple and the user interface easy to use.</p>
+<br>
+<hr>
+<h5>Copyright (c) GraxCode</h5>

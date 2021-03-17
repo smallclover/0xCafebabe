@@ -1,0 +1,26 @@
+plugins {
+    id 'java'
+}
+
+group 'org.example'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    // weblaf-core
+    implementation group: 'com.weblookandfeel', name: 'weblaf-core', version: '1.2.8'
+    // weblaf-ui
+    implementation group: 'com.weblookandfeel', name: 'weblaf-ui', version: '1.2.8'
+    // cfr
+    implementation group: 'org.benf', name: 'cfr', version: '0.146'
+    // jgraphx
+    implementation group: 'org.tinyjee.jgraphx', name: 'jgraphx', version: '3.4.1.3'
+
+}
+
+test {
+    useJUnitPlatform()
+}
