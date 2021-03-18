@@ -1,9 +1,9 @@
 package me.nov.cafebabe.gui.node;
 
-import java.util.Collections;
-import java.util.Comparator;
+import java.util.*;
 
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.TreeNode;
 
 import org.objectweb.asm.tree.ClassNode;
 
@@ -42,16 +42,19 @@ public class SortedTreeClassNode extends DefaultMutableTreeNode {
 
 	@SuppressWarnings("unchecked")
 	public void sort() {
-		//if (children != null)
-			//Collections.sort(children, comparator());
+		if (children != null){
+			children.sort(comparator());
+		}
 	}
 
-	private Comparator<SortedTreeClassNode> comparator() {
-		return new Comparator<SortedTreeClassNode>() {
+	private Comparator<TreeNode> comparator() {
+		return new Comparator<>() {
 			@Override
-			public int compare(SortedTreeClassNode node1, SortedTreeClassNode node2) {
-				boolean leaf1 = node1.cn != null;
-				boolean leaf2 = node2.cn != null;
+			public int compare(TreeNode node1, TreeNode node2) {
+				SortedTreeClassNode sortedNode1 = (SortedTreeClassNode)node1;
+				SortedTreeClassNode sortedNode2 = (SortedTreeClassNode)node2;
+				boolean leaf1 = sortedNode1.cn != null;
+				boolean leaf2 = sortedNode2.cn != null;
 
 				if (leaf1 && !leaf2) {
 					return 1;
@@ -59,7 +62,7 @@ public class SortedTreeClassNode extends DefaultMutableTreeNode {
 				if (!leaf1 && leaf2) {
 					return -1;
 				}
-				return node1.getText().compareTo(node2.getText());
+				return sortedNode1.getText().compareTo(sortedNode2.getText());
 			}
 		};
 	}

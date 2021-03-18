@@ -1,23 +1,21 @@
 package me.nov.cafebabe.utils.ui;
 
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.Toolkit;
+import java.awt.*;
 
-import javax.swing.BorderFactory;
-import javax.swing.ImageIcon;
-import javax.swing.JLabel;
-import javax.swing.JSeparator;
-import javax.swing.SwingConstants;
+import javax.swing.*;
 import javax.swing.border.EtchedBorder;
 
+import com.alee.api.data.BoxOrientation;
 import com.alee.extended.image.WebImage;
+import com.alee.extended.overlay.AlignedOverlay;
 import com.alee.extended.overlay.WebOverlay;
 import com.alee.extended.panel.GroupPanel;
 //import com.alee.extended.panel.WebOverlay;
 import com.alee.laf.WebLookAndFeel;
 //import com.alee.managers.language.data.TooltipWay;
+import com.alee.laf.label.WebLabel;
 import com.alee.managers.tooltip.TooltipManager;
+import com.alee.managers.tooltip.TooltipWay;
 
 public class WebLaF {
 
@@ -27,12 +25,16 @@ public class WebLaF {
 	}
 
 	public static GroupPanel createInfoLabel(JLabel nameLabel, String overlayText) {
+		// overlay
 		WebOverlay overlayPanel = new WebOverlay();
-//		overlayPanel.setComponent(nameLabel);
-		WebImage overlay = new WebImage(info);
-//		TooltipManager.setTooltip(overlay, overlayText, TooltipWay.trailing, 0);
-//		overlayPanel.addOverlay(overlay, SwingConstants.TRAILING, SwingConstants.TOP);
-//		overlayPanel.setComponentMargin(0, 0, 0, overlay.getPreferredSize().width);
+		overlayPanel.setContent(nameLabel);
+
+		// overlay tooltip
+		WebLabel overlay = new WebLabel(info);
+		overlay.setToolTip(overlayText, TooltipWay.trailing, 0);
+		overlayPanel.addOverlay(
+				new AlignedOverlay(overlay, BoxOrientation.right, BoxOrientation.top,
+						new Insets(0,0,0,overlay.getPreferredSize().width)));
 		return new GroupPanel(overlayPanel);
 	}
 

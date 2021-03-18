@@ -15,7 +15,7 @@ public class PreferencesPane extends WebTabbedPane implements Opcodes {
 	private static final long serialVersionUID = 1L;
 
 	public PreferencesPane() throws Exception {
-		// 设置选项卡模式
+		// 设置选项卡放置的位置
 		this.setTabPlacement(WebTabbedPane.LEFT);
 		for (String key : Settings.settings.keySet()) {
 			// 选项卡标题

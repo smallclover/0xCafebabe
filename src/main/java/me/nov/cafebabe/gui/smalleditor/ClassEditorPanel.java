@@ -16,10 +16,10 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import com.alee.extended.panel.GroupPanel;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.tree.ClassNode;
 
-//import com.alee.extended.panel.WebButtonGroup;
 import com.alee.laf.button.WebToggleButton;
 import com.alee.laf.checkbox.WebCheckBox;
 import com.alee.laf.combobox.WebComboBox;
@@ -36,11 +36,17 @@ import me.nov.cafebabe.utils.formatting.EscapedString;
 import me.nov.cafebabe.utils.ui.Listeners;
 import me.nov.cafebabe.utils.ui.WebLaF;
 
+/**
+ * 点击jar包中具体的类，在右下角显示该类可以编辑的信息
+ * 位置：右下
+ * 类编辑面板
+ */
 public class ClassEditorPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
+	// 当前选择的类对象
 	private ClassNode clazz;
 	private WebTextField name;
-//	private WebButtonGroup access;
+	private GroupPanel access;
 	private WebComboBox version;
 	private WebTextField superName;
 	private WebTextField signature;
@@ -52,37 +58,52 @@ public class ClassEditorPanel extends JPanel {
 		this.setLayout(new GridBagLayout());
 		this.setBorder(BorderFactory.createEmptyBorder(4, 10, 10, 10));
 		this.setFocusable(false);
+
+
+		// name栏
+		// name文本框
 		name = new WebTextField(20);
+		// 绑定修改事件
 		Listeners.addChangeListener(name, l -> {
 			String trim = name.getText().trim();
 			if (!trim.isEmpty())
+				// 反应修改的内容
 				clazz.name = trim;
 		});
+		// name标签
 		JLabel nameLabel = new JLabel(Translations.get("Name:"));
 		nameLabel.setDisplayedMnemonic('N');
 		nameLabel.setLabelFor(name);
 
-//		access = accessToggleGroup();
-//		Listeners.addMouseReleasedListener(access, () -> {
-//			int acc = clazz.access; // do not lose old access
-//			for (Component c : access.getComponents()) {
-//				WebToggleButton tb = (WebToggleButton) c;
-//				try {
-//					int accessInt = Opcodes.class.getField("ACC_" + tb.getToolTipText().toUpperCase()).getInt(null);
-//					if (tb.isSelected()) {
-//						acc |= accessInt;
-//					} else {
-//						acc &= ~accessInt;
-//					}
-//				} catch (Exception e1) {
-//					e1.printStackTrace();
-//				}
-//			}
-//			clazz.access = acc;
-//		}, true);
+
+		// access栏
+		// access按钮组
+		access = accessToggleGroup();
+		Listeners.addMouseReleasedListener(access, () -> {
+			int acc = clazz.access; // do not lose old access
+			for (Component c : access.getComponents()) {
+				WebToggleButton tb = (WebToggleButton) c;
+				try {
+					int accessInt = Opcodes.class.getField("ACC_" + tb.getToolTipText().toUpperCase()).getInt(null);
+					if (tb.isSelected()) {
+						acc |= accessInt;
+					} else {
+						acc &= ~accessInt;
+					}
+				} catch (Exception e1) {
+					e1.printStackTrace();
+				}
+			}
+			clazz.access = acc;
+		}, true);
+		// access标签
 		JLabel accessLabel = new JLabel(Translations.get("Access:"));
 		accessLabel.setDisplayedMnemonic('A');
-//		accessLabel.setLabelFor(access);
+		accessLabel.setLabelFor(access);
+
+
+		// version栏
+		// version选择框
 		version = new WebComboBox(new Integer[] { 49, 50, 51, 52, 53, 54, 55, 56, 57, 58 });
 		version.addActionListener(l -> {
 			clazz.version = (int) version.getSelectedItem();
@@ -91,6 +112,7 @@ public class ClassEditorPanel extends JPanel {
 		versionLabel.setDisplayedMnemonic('V');
 		versionLabel.setLabelFor(version);
 
+		// parent栏
 		superName = new WebTextField(20);
 		Listeners.addChangeListener(superName, l -> {
 			if (superName.getText().isEmpty()) {
@@ -103,6 +125,8 @@ public class ClassEditorPanel extends JPanel {
 		superNameLabel.setDisplayedMnemonic('P');
 		superNameLabel.setLabelFor(superName);
 
+
+		// 文本框里放选择框
 		signature = new WebTextField(20);
 		signature.setMargin(0, 2, 0, 0);
 		hasSignature = new WebCheckBox();
@@ -110,6 +134,9 @@ public class ClassEditorPanel extends JPanel {
 		hasSignature.setSelected(false);
 		hasSignature.setFocusable(false);
 		signature.setLeadingComponent(hasSignature);
+
+		// TODO bug
+		// 从有signature转移过来时原有的不能消失
 		Listeners.addChangeListener(signature, l -> {
 			if (hasSignature.isSelected()) {
 				clazz.signature = signature.getText().trim();
@@ -124,11 +151,15 @@ public class ClassEditorPanel extends JPanel {
 				clazz.signature = null;
 			}
 		});
+
+		// signature栏
 		JLabel signatureLabel = new JLabel(Translations.get("Signature:"));
 		signatureLabel.setDisplayedMnemonic('S');
-		signatureLabel.setLabelFor(superName);
+		signatureLabel.setLabelFor(signature);
 
+		// 显示源代码文件名栏
 		sourceFile = new WebTextField(20);
+		sourceFile.setToolTipText(Translations.get("Original name"));
 		Listeners.addChangeListener(sourceFile, l -> {
 			String sf = sourceFile.getText();
 			if (sf.isEmpty()) {
@@ -137,11 +168,13 @@ public class ClassEditorPanel extends JPanel {
 				clazz.sourceFile = sf;
 			}
 		});
-		sourceFile.setToolTipText(Translations.get("Original name"));
+
 		JLabel sourceFileLabel = new JLabel(Translations.get("Source file:"));
 		sourceFileLabel.setDisplayedMnemonic('S');
 		sourceFileLabel.setLabelFor(sourceFile);
 
+
+		// Interfaces 栏
 		interfaces = new WebTextField(20);
 		Listeners.addChangeListener(interfaces, l -> {
 			String itfs = interfaces.getText();
@@ -153,9 +186,11 @@ public class ClassEditorPanel extends JPanel {
 				clazz.interfaces.add(itfc);
 			}
 		});
+
 		JLabel itfLabel = new JLabel(Translations.get("Interfaces:"));
 		itfLabel.setDisplayedMnemonic('I');
 		itfLabel.setLabelFor(interfaces);
+
 		JButton decompile = new JButton(Translations.get("Decompile"));
 		decompile.addActionListener(l -> {
 			SortedTreeClassNode treeNode = (SortedTreeClassNode) classTree.getLastSelectedPathComponent();
@@ -173,26 +208,36 @@ public class ClassEditorPanel extends JPanel {
 		gbc.gridx = GridBagConstraints.RELATIVE;
 		gbc.gridy = 0;
 
+		// name
+		// name标签
 		this.add(nameLabel, gbc);
 		gbc.gridwidth = GridBagConstraints.REMAINDER;
+		// name文本框
 		this.add(name, gbc);
 
+		// 分割线
 		gbc.gridy++;
 		this.add(WebLaF.createSeparator(), gbc);
 
+		//access
 		gbc.gridy++;
 		gbc.gridwidth = 1;
 		this.add(accessLabel, gbc);
 		gbc.gridwidth = GridBagConstraints.REMAINDER;
-//		this.add(access, gbc);
+		this.add(access, gbc);
+
+		// 分割线
 		gbc.gridy++;
 		this.add(WebLaF.createSeparator(), gbc);
+
+		// version
 		gbc.gridy++;
 		gbc.gridwidth = 1;
 		this.add(versionLabel, gbc);
 		gbc.gridwidth = GridBagConstraints.REMAINDER;
 		this.add(version, gbc);
 
+		// parent
 		gbc.gridy++;
 		gbc.gridwidth = 1;
 		this.add(superNameLabel, gbc);
@@ -200,9 +245,13 @@ public class ClassEditorPanel extends JPanel {
 		gbc.weightx = 1;
 		this.add(superName, gbc);
 
+
+		// 分割线
 		gbc.gridy++;
 		this.add(WebLaF.createSeparator(), gbc);
 
+
+		// signature
 		gbc.gridy++;
 		gbc.gridwidth = 1;
 		this.add(signatureLabel, gbc);
@@ -210,14 +259,20 @@ public class ClassEditorPanel extends JPanel {
 		gbc.weightx = 1;
 		this.add(signature, gbc);
 
+
+		// sourceFile
 		gbc.gridy++;
 		gbc.gridwidth = 1;
 		this.add(sourceFileLabel, gbc);
 		gbc.gridwidth = GridBagConstraints.REMAINDER;
 		gbc.weightx = 1;
 		this.add(sourceFile, gbc);
+
+		// 分割线
 		gbc.gridy++;
 		this.add(WebLaF.createSeparator(), gbc);
+
+		// interfaces
 		gbc.gridy++;
 		gbc.gridwidth = 1;
 		this.add(WebLaF.createInfoLabel(itfLabel, Translations.get("Separated by a comma")), gbc);
@@ -244,60 +299,64 @@ public class ClassEditorPanel extends JPanel {
 
 	}
 
-//	private WebButtonGroup accessToggleGroup() {
-//		// do not change tooltips
-//		WebToggleButton private_ = new WebToggleButton(MethodListCellRenderer.pri);
-//		private_.setToolTipText("private");
-//		WebToggleButton public_ = new WebToggleButton(MethodListCellRenderer.pub);
-//		public_.setToolTipText("public");
-//		WebToggleButton protected_ = new WebToggleButton(MethodListCellRenderer.pro);
-//		protected_.setToolTipText("protected");
-//		WebToggleButton abstract_ = new WebToggleButton(MethodListCellRenderer.abs);
-//		abstract_.setToolTipText("abstract");
-//		WebToggleButton final_ = new WebToggleButton(MethodListCellRenderer.fin);
-//		final_.setToolTipText("final");
-//		WebToggleButton synthetic_ = new WebToggleButton(MethodListCellRenderer.synth);
-//		synthetic_.setToolTipText("synthetic");
-//
-//		private_.addActionListener(l -> {
-//			public_.setSelected(false);
-//			protected_.setSelected(false);
-//		});
-//		public_.addActionListener(l -> {
-//			protected_.setSelected(false);
-//			private_.setSelected(false);
-//		});
-//		protected_.addActionListener(l -> {
-//			public_.setSelected(false);
-//			private_.setSelected(false);
-//		});
-//		WebButtonGroup accessGroup = new WebButtonGroup(false, private_, public_, protected_, abstract_, final_,
-//				synthetic_);
-//		accessGroup.setButtonsDrawFocus(false);
-//
-//		return accessGroup;
-//	}
+	private GroupPanel accessToggleGroup() {
+		// do not change tooltips
+		WebToggleButton private_ = new WebToggleButton(MethodListCellRenderer.pri);
+		private_.setToolTipText("private");
+
+		WebToggleButton public_ = new WebToggleButton(MethodListCellRenderer.pub);
+		public_.setToolTipText("public");
+
+		WebToggleButton protected_ = new WebToggleButton(MethodListCellRenderer.pro);
+		protected_.setToolTipText("protected");
+
+		WebToggleButton abstract_ = new WebToggleButton(MethodListCellRenderer.abs);
+		abstract_.setToolTipText("abstract");
+
+		WebToggleButton final_ = new WebToggleButton(MethodListCellRenderer.fin);
+		final_.setToolTipText("final");
+
+		WebToggleButton synthetic_ = new WebToggleButton(MethodListCellRenderer.synth);
+		synthetic_.setToolTipText("synthetic");
+
+		private_.addActionListener(l -> {
+			public_.setSelected(false);
+			protected_.setSelected(false);
+		});
+		public_.addActionListener(l -> {
+			protected_.setSelected(false);
+			private_.setSelected(false);
+		});
+		protected_.addActionListener(l -> {
+			public_.setSelected(false);
+			private_.setSelected(false);
+		});
+
+		GroupPanel accessGroup = new GroupPanel(true, private_, public_, protected_, abstract_, final_,
+				synthetic_);
+		return accessGroup;
+	}
 
 	public void editClass(ClassNode clazz) {
 		this.clazz = clazz;
 		this.name.setText(clazz.name);
-//		for (Field f : Opcodes.class.getDeclaredFields()) {
-//			try {
-//				if (f.getName().startsWith("ACC_")) {
-//					int acc = f.getInt(null);
-//					String accName = f.getName().substring(4).toLowerCase();
-//					for (Component c : access.getComponents()) {
-//						WebToggleButton tb = (WebToggleButton) c;
-//						if (tb.getToolTipText().equals(accName)) {
-//							tb.setSelected((clazz.access & acc) != 0);
-//							break;
-//						}
-//					}
-//				}
-//			} catch (Exception e) {
-//				e.printStackTrace();
-//			}
-//		}
+		for (Field f : Opcodes.class.getDeclaredFields()) {
+			try {
+				if (f.getName().startsWith("ACC_")) {
+					int acc = f.getInt(null);
+					String accName = f.getName().substring(4).toLowerCase();
+					for (Component c : access.getComponents()) {
+						WebToggleButton tb = (WebToggleButton) c;
+						if (tb.getToolTipText().equals(accName)) {
+							tb.setSelected((clazz.access & acc) != 0);
+							break;
+						}
+					}
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
 		this.superName.setText(clazz.superName);
 		this.sourceFile.setText(clazz.sourceFile);
 		this.version.setSelectedItem(clazz.version);

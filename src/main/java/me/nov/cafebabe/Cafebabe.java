@@ -27,6 +27,9 @@ import java.io.File;
 import java.lang.reflect.Field;
 import java.nio.charset.Charset;
 
+/**
+ * cafebabe主窗口(JFrame)，程序入口
+ */
 public class Cafebabe extends WebFrame {
 	private static final long serialVersionUID = 1L;
 	public static final String title = "Cafebabe Editor Lite";
@@ -122,9 +125,11 @@ public class Cafebabe extends WebFrame {
 			JFileChooser jfc = new JFileChooser(new File(System.getProperty("user.home") + File.separator + "Desktop"));
 			jfc.setAcceptAllFileFilterUsed(false);
 			jfc.setFileFilter(new FileNameExtensionFilter("Java Package (*.jar)", "jar"));
+			// 打开文件对话框，同意按钮是打开(Open)
 			int result = jfc.showOpenDialog(this);
+			// 打开的情况下
 			if (result == JFileChooser.APPROVE_OPTION) {
-				File input = jfc.getSelectedFile();
+				File input = jfc.getSelectedFile();// 当前用户选择的文件
 				tree.onJarLoad(-1, input);
 			}
 		});
@@ -143,6 +148,7 @@ public class Cafebabe extends WebFrame {
 
 			// 设置文件过滤器，过滤jar
 			jfc.setFileFilter(new FileNameExtensionFilter("Java Package (*.jar)", "jar"));
+			// 打开文件对话框，同意按钮是打开(Save)
 			int result = jfc.showSaveDialog(this);
 			if (result == JFileChooser.APPROVE_OPTION) {
 				File output = jfc.getSelectedFile();
@@ -221,6 +227,7 @@ public class Cafebabe extends WebFrame {
 			charset.setAccessible(true);
 			charset.set(null, null);
 			Settings.loadSettings();
+			// Swing的核心是LookAndFeel Laf
 //			WebLookAndFeel.setDecorateFrames(decorated);
 //			WebLookAndFeel.setDecorateDialogs(decorated);
 		} catch (Throwable t) {

@@ -19,15 +19,21 @@ import org.objectweb.asm.tree.MethodNode;
 import me.nov.cafebabe.gui.node.MethodListNode;
 import me.nov.cafebabe.utils.asm.Access;
 
+/**
+ * 方法列表单元渲染器
+ */
 public class MethodListCellRenderer extends DefaultTreeCellRenderer implements Opcodes {
 	private static final long serialVersionUID = 1L;
 
+	// private, protected, public, default, construct
 	public static ImageIcon pri, pro, pub, def, constr; // method access
+	// abstract, final, native, static, synchronized, synthetic
 	public static ImageIcon abs, fin, nat, stat, syn, synth; // general access
 
 	private HashMap<Integer, ImageIcon> methodIcons = new HashMap<>();
 
 	static {
+		// access type
 		MethodListCellRenderer.pri = new ImageIcon(Toolkit.getDefaultToolkit()
 				.getImage(MethodListCellRenderer.class.getResource("/method/private.png")));
 		MethodListCellRenderer.pro = new ImageIcon(Toolkit.getDefaultToolkit()
@@ -37,6 +43,7 @@ public class MethodListCellRenderer extends DefaultTreeCellRenderer implements O
 		MethodListCellRenderer.def = new ImageIcon(Toolkit.getDefaultToolkit()
 				.getImage(MethodListCellRenderer.class.getResource("/method/default.png")));
 
+		//
 		MethodListCellRenderer.abs = new ImageIcon(Toolkit.getDefaultToolkit()
 				.getImage(MethodListCellRenderer.class.getResource("/access/abstract.png")));
 		MethodListCellRenderer.fin = new ImageIcon(

@@ -38,6 +38,7 @@ import me.nov.cafebabe.utils.drop.JarDropHandler;
 
 public class ClassTree extends WebTree<SortedTreeClassNode> implements IDropUser {
 	private static final long serialVersionUID = 1L;
+	// JTree TreeModel的默认实现
 	private DefaultTreeModel model;
 	private HashMap<JarEntry, ClassNode> classes;
 	private Map<String, String> knownCommons; // used for frame regeneration
@@ -49,7 +50,7 @@ public class ClassTree extends WebTree<SortedTreeClassNode> implements IDropUser
 		this.setRootVisible(false);
 		this.setShowsRootHandles(true);
 		this.setFocusable(false);
-//		this.setCellRenderer(new ClassTreeCellRenderer());
+		this.setCellRenderer(new ClassTreeCellRenderer());
 		this.setSelectionStyle(TreeSelectionStyle.group);
 
 		this.addTreeSelectionListener(new TreeSelectionListener() {
