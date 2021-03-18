@@ -22,3 +22,6 @@
 
 ## 使用方法
 下载该项目源代码，使用Gradle编译成jar文件
+
+## 截图
+![加载完jar的主界面](image/main_loaded_jar.png)
