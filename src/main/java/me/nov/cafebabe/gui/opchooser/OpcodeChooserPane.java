@@ -12,6 +12,9 @@ import com.alee.laf.tabbedpane.WebTabbedPane;
 import me.nov.cafebabe.gui.smalleditor.list.OpList;
 import me.nov.cafebabe.translations.Translations;
 
+/**
+ * Opcode选择卡
+ */
 public class OpcodeChooserPane extends WebTabbedPane implements Opcodes {
 	private static final long serialVersionUID = 1L;
 	private ArrayList<OpList> lists = new ArrayList<>();

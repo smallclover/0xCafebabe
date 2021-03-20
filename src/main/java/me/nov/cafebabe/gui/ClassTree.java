@@ -36,9 +36,13 @@ import me.nov.cafebabe.translations.Translations;
 import me.nov.cafebabe.utils.drop.IDropUser;
 import me.nov.cafebabe.utils.drop.JarDropHandler;
 
+/**
+ * 主窗口左侧jar包子窗口
+ */
 public class ClassTree extends WebTree<SortedTreeClassNode> implements IDropUser {
 	private static final long serialVersionUID = 1L;
 	// JTree TreeModel的默认实现
+	// JTree组件包含两个model一个是TreeModel即节点本身的数据，另一个是TreeSelectionModel即JTree所有选中组件的状态信息
 	private DefaultTreeModel model;
 	private HashMap<JarEntry, ClassNode> classes;
 	private Map<String, String> knownCommons; // used for frame regeneration
@@ -53,15 +57,14 @@ public class ClassTree extends WebTree<SortedTreeClassNode> implements IDropUser
 		this.setCellRenderer(new ClassTreeCellRenderer());
 		this.setSelectionStyle(TreeSelectionStyle.group);
 
-		this.addTreeSelectionListener(new TreeSelectionListener() {
-			@Override
-			public void valueChanged(TreeSelectionEvent e) {
-				SortedTreeClassNode node = (SortedTreeClassNode) getLastSelectedPathComponent();
-				if (node != null && node.getClazz() != null) {
-					ml.setMethods(node.getClazz());
-					Cafebabe.gui.smallEditorPanel.setViewportView(editor);
-					editor.editClass(node.getClazz());
-				}
+		// 树节点选择事件监听器
+		this.addTreeSelectionListener(e -> {
+			// 获取最后选择到的组件状态信息
+			SortedTreeClassNode node = (SortedTreeClassNode) getLastSelectedPathComponent();
+			if (node != null && node.getClazz() != null) {
+				ml.setMethods(node.getClazz());
+				Cafebabe.gui.smallEditorPanel.setViewportView(editor);
+				editor.editClass(node.getClazz());
 			}
 		});
 		this.model = new DefaultTreeModel(root = new SortedTreeClassNode(""));

@@ -17,6 +17,9 @@ import org.objectweb.asm.tree.AbstractInsnNode;
 import me.nov.cafebabe.Cafebabe;
 import me.nov.cafebabe.translations.Translations;
 
+/**
+ * opcode选择窗口
+ */
 public class OpcodeChooserDialog extends WebDialog {
 	private static final long serialVersionUID = 1L;
 	private int opcode;

@@ -26,14 +26,11 @@ public class ClassMemberList extends JTree {
 		this.setShowsRootHandles(false);
 		this.setFocusable(false);
 		this.setCellRenderer(new MethodListCellRenderer());
-		this.addTreeSelectionListener(new TreeSelectionListener() {
-			@Override
-			public void valueChanged(TreeSelectionEvent e) {
-				MethodListNode node = (MethodListNode) getLastSelectedPathComponent();
-				if (node != null && node.getMethod() != null) {
-					Cafebabe.gui.smallEditorPanel.setViewportView(editor);
-					editor.editMethod(node.getMethod());
-				}
+		this.addTreeSelectionListener(e -> {
+			MethodListNode node = (MethodListNode) getLastSelectedPathComponent();
+			if (node != null && node.getMethod() != null) {
+				Cafebabe.gui.smallEditorPanel.setViewportView(editor);
+				editor.editMethod(node.getMethod());
 			}
 		});
 		this.model = new DefaultTreeModel(root = new MethodListNode(null, null));

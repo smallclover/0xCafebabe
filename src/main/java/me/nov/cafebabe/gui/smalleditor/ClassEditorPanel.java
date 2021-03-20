@@ -8,6 +8,10 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Locale;
+import java.util.stream.Collectors;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -135,8 +139,6 @@ public class ClassEditorPanel extends JPanel {
 		hasSignature.setFocusable(false);
 		signature.setLeadingComponent(hasSignature);
 
-		// TODO bug
-		// 从有signature转移过来时原有的不能消失
 		Listeners.addChangeListener(signature, l -> {
 			if (hasSignature.isSelected()) {
 				clazz.signature = signature.getText().trim();
@@ -337,35 +339,54 @@ public class ClassEditorPanel extends JPanel {
 		return accessGroup;
 	}
 
+	/**
+	 * 向组件中填充Class的数据
+	 * @param clazz
+	 */
 	public void editClass(ClassNode clazz) {
+		// 当前选择的类对象
 		this.clazz = clazz;
+		// 当前类的名字
 		this.name.setText(clazz.name);
-		for (Field f : Opcodes.class.getDeclaredFields()) {
+
+		// 获取所有的ACC_开头的访问标识符
+		List<Field> accessList = Arrays.stream(Opcodes.class.getDeclaredFields())
+				.filter( field -> field.getName().startsWith("ACC_"))
+				.collect(Collectors.toList());
+
+		for (Field f : accessList) {
 			try {
-				if (f.getName().startsWith("ACC_")) {
 					int acc = f.getInt(null);
 					String accName = f.getName().substring(4).toLowerCase();
 					for (Component c : access.getComponents()) {
 						WebToggleButton tb = (WebToggleButton) c;
 						if (tb.getToolTipText().equals(accName)) {
+							// 跟Opcodes的access做与运算，判断access中是否包含指定的访问标识符
 							tb.setSelected((clazz.access & acc) != 0);
 							break;
 						}
 					}
-				}
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
+
 		this.superName.setText(clazz.superName);
+
 		this.sourceFile.setText(clazz.sourceFile);
+
 		this.version.setSelectedItem(clazz.version);
+
 		if (clazz.signature != null) {
 			hasSignature.setSelected(true);
 			this.signature.setText(clazz.signature);
 		} else {
 			hasSignature.setSelected(false);
+			this.signature.setText("");
 		}
+
+		this.interfaces.setText(String.join(",", clazz.interfaces));
+
 	}
 
 }

@@ -51,6 +51,8 @@ public class InstructionEditorPanel extends JPanel implements Opcodes {
 		WebLabel opcode = new WebLabel(WebLabel.LEFT);
 		opcode.setText("<html>\u00A0" + Html.color(Colors.getColor(ain.getType(), ain.getOpcode()),
 				Html.bold(OpcodeFormatting.getOpcodeText(ain.getOpcode()).toLowerCase())));
+
+		// opcode 点击事件
 		Listeners.addMouseReleasedListener(opcode, () -> {
 			int newOp = new OpcodeChooserDialog(ain).getOpcode();
 			if (newOp != ain.getOpcode()) {
