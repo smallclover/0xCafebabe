@@ -36,13 +36,14 @@ public class DecompilerPanel extends JPanel {
 	public DecompilerPanel(ClassNode cn, MethodNode mn) {
 		this.dp = new DecompilerTextArea();
 		dp.setText(CFR.decompile(cn, mn));
-		this.label = new JLabel("CFR Decompiler 0.145");
+		this.label = new JLabel("CFR Decompiler 0.151");
 		this.setLayout(new BorderLayout(0, 0));
 		JPanel lpad = new JPanel();
 		lpad.setBorder(new EmptyBorder(1, 5, 0, 1));
 		lpad.setLayout(new GridLayout());
 		lpad.add(label);
 		JPanel rs = new JPanel();
+		// 指定行数列数，但是两者都是非零值得时候，只使用行数和组件总数来确定
 		rs.setLayout(new GridLayout(1, 5));
 		for (int i = 0; i < 3; i++)
 			rs.add(new JPanel());

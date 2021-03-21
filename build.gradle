@@ -15,7 +15,7 @@ dependencies {
     // weblaf-ui
     implementation group: 'com.weblookandfeel', name: 'weblaf-ui', version: '1.2.13'
     // cfr
-    implementation group: 'org.benf', name: 'cfr', version: '0.146'
+    implementation group: 'org.benf', name: 'cfr', version: '0.151'
     // jgraphx
     implementation group: 'org.tinyjee.jgraphx', name: 'jgraphx', version: '3.4.1.3'
 

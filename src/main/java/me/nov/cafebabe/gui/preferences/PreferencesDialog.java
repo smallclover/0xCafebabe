@@ -37,7 +37,8 @@ public class PreferencesDialog extends WebDialog {
 			e1.printStackTrace();
 		}
 
-		// 南部 close按钮
+		// close按钮
+		// 流式布局 FlowLayout.TRAILING
 		JPanel buttons = new JPanel(new FlowLayout(4));
 		this.add(buttons, BorderLayout.SOUTH);
 
@@ -46,6 +47,7 @@ public class PreferencesDialog extends WebDialog {
 		close.addActionListener(e -> {
 			setVisible(false);
 		});
+		// 设置为null这是相对屏幕的中间位置
 		// 设置组件的位置，getParent使它的位置相对父亲窗口位置
 		setLocationRelativeTo(getParent());
 		this.setVisible(true);

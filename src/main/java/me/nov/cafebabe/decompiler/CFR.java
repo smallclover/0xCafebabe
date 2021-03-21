@@ -16,6 +16,7 @@ import org.benf.cfr.reader.api.SinkReturns;
 import org.benf.cfr.reader.apiunreleased.ClassFileSource2;
 import org.benf.cfr.reader.apiunreleased.JarContent;
 import org.benf.cfr.reader.bytecode.analysis.parse.utils.Pair;
+import org.benf.cfr.reader.util.AnalysisType;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.MethodNode;
@@ -135,6 +136,12 @@ public class CFR {
 				options.remove("methodname");
 			}
 			ClassFileSource2 cfs2 = new ClassFileSource2() {
+				// cfr 0.151 和0.146 改方法有变化
+				@Override
+				public JarContent addJarContent(String jarPath, AnalysisType analysisType) {
+					return null;
+				}
+
 				@Override
 				public void informAnalysisRelativePathDetail(String a, String b) {
 				}
@@ -162,10 +169,6 @@ public class CFR {
 					throw new RuntimeException();
 				}
 
-				@Override
-				public JarContent addJarContent(String arg0) {
-					return null;
-				}
 			};
 			CfrDriver cfrDriver = new CfrDriver.Builder().withClassFileSource(cfs2).withOutputSink(mySink)
 					.withOptions(options).build();
