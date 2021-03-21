@@ -11,6 +11,9 @@ import me.nov.cafebabe.setting.Setting;
 import me.nov.cafebabe.setting.Settings;
 import me.nov.cafebabe.translations.Translations;
 
+/**
+ * preference 选项卡和选项卡内容
+ */
 public class PreferencesPane extends WebTabbedPane implements Opcodes {
 	private static final long serialVersionUID = 1L;
 

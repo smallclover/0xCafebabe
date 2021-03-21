@@ -26,6 +26,11 @@ public class Translations {
 
 	private static File translationsFile;
 
+	/**
+	 * 根据指定的字符串查找翻译名
+	 * @param i
+	 * @return
+	 */
 	public static String get(String i) {
 		if (!translate) {
 			return i;

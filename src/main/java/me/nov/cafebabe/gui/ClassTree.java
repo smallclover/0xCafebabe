@@ -82,105 +82,102 @@ public class ClassTree extends WebTree<SortedTreeClassNode> implements IDropUser
 	
 	@Override
 	public void onJarLoad(int id, File input) {
+
+		// 加载进度条
 		final WebProgressDialog progress = new WebProgressDialog(Cafebabe.gui, Translations.get("Loading"));
 		progress.setText(Translations.get("Loading .jar file..."));
 
 		// loading algorithm taken from loader class
-		final Thread loader = new Thread(new Runnable() {
-
-
-			@Override
-			public void run() {
-				try {
-					inputFile = input;
-					JarFile jf = new JarFile(input);
-					classes = new HashMap<>();
-					knownCommons = new HashMap<>();
-					int files = 0;
-					Enumeration<JarEntry> entries = jf.entries();
-					while (entries.hasMoreElements()) {
-						files++; // count files
-						entries.nextElement();
-					}
-
-					int fileNum = 0;
-					entries = jf.entries();
-					while (entries.hasMoreElements()) {
-						try {
-							JarEntry entry = entries.nextElement();
-							if (entry.getSize() < 3) {
-								continue;
-							}
-							progress.setProgress((int) (fileNum / (double) files * 50d));
-							progress.setText(Translations.get("Loading file") + " " + entry.getName());
-							InputStream stream = jf.getInputStream(entry);
-
-							ByteArrayOutputStream bos = new ByteArrayOutputStream();
-
-							int read = 0;
-							byte[] cafebabe = new byte[4];
-							stream.read(cafebabe);
-							bos.write(cafebabe, 0, 4);
-							if (Arrays.equals(bos.toByteArray(), Loader.javaMagic)) {
-								byte[] buff = new byte[1024];
-
-								while ((read = stream.read(buff)) != -1) {
-									bos.write(buff, 0, read);
-								}
-								byte[] data = bos.toByteArray();
-								ClassNode cn = Loader.convertToASM(data);
-								if (useFrameRegeneration) {
-									FrameHack.findCommonParents(knownCommons, cn); // preload common super classes for frame regeneration
-								}
-								classes.put(entry, cn);
-							}
-						} catch (Exception e) {
-							e.printStackTrace();
-						}
-						fileNum++;
-					}
-
-					int size = classes.keySet().size();
-					fileNum = 0;
-					for (JarEntry e : classes.keySet()) {
-						progress.setProgress(50 + (int) (fileNum / (double) size * 50d));
-						progress.setText(Translations.get("Creating tree element") + " " + e.getName());
-						String[] path = e.getName().split("/");
-						SortedTreeClassNode current = root;
-						for (int i = 0; i < path.length; i++) {
-							SortedTreeClassNode next = null;
-							for (int j = 0; j < current.getChildCount(); j++) {
-
-								SortedTreeClassNode child = (SortedTreeClassNode) current.getChildAt(j);
-								if (child.getText().equals(path[i])) {
-									next = child;
-									break;
-								}
-							}
-							if (next == null) {
-								if (i + 1 >= path.length) { // last one
-									next = new SortedTreeClassNode(classes.get(e));
-								} else {
-									next = new SortedTreeClassNode(path[i]);
-								}
-								current.add(next);
-							}
-							current = next;
-						}
-						fileNum++;
-					}
-					jf.close();
-					root.sort();
-					model.reload();
-					ClassTree.this.repaint();
-				} catch (IOException e) {
-					e.printStackTrace();
+		final Thread loader = new Thread(() -> {
+			try {
+				inputFile = input;
+				JarFile jf = new JarFile(input);
+				classes = new HashMap<>();
+				knownCommons = new HashMap<>();
+				int files = 0;
+				Enumeration<JarEntry> entries = jf.entries();
+				while (entries.hasMoreElements()) {
+					files++; // count files
+					entries.nextElement();
 				}
-				progress.setProgress(100);
-				progress.setText(Translations.get("Finished loading!"));
-				ThreadUtils.sleepSafely(500);
-				progress.setVisible(false);
+
+				int fileNum = 0;
+				entries = jf.entries();
+				while (entries.hasMoreElements()) {
+					try {
+						JarEntry entry = entries.nextElement();
+						if (entry.getSize() < 3) {
+							continue;
+						}
+						progress.setProgress((int) (fileNum / (double) files * 50d));
+						progress.setText(Translations.get("Loading file") + " " + entry.getName());
+						InputStream stream = jf.getInputStream(entry);
+
+						ByteArrayOutputStream bos = new ByteArrayOutputStream();
+
+						int read = 0;
+						byte[] cafebabe = new byte[4];
+						stream.read(cafebabe);
+						bos.write(cafebabe, 0, 4);
+						if (Arrays.equals(bos.toByteArray(), Loader.javaMagic)) {
+							byte[] buff = new byte[1024];
+
+							while ((read = stream.read(buff)) != -1) {
+								bos.write(buff, 0, read);
+							}
+							byte[] data = bos.toByteArray();
+							ClassNode cn = Loader.convertToASM(data);
+							if (useFrameRegeneration) {
+								FrameHack.findCommonParents(knownCommons, cn); // preload common super classes for frame regeneration
+							}
+							classes.put(entry, cn);
+						}
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+					fileNum++;
+				}
+
+				int size = classes.keySet().size();
+				fileNum = 0;
+				for (JarEntry e : classes.keySet()) {
+					progress.setProgress(50 + (int) (fileNum / (double) size * 50d));
+					progress.setText(Translations.get("Creating tree element") + " " + e.getName());
+					String[] path = e.getName().split("/");
+					SortedTreeClassNode current = root;
+					for (int i = 0; i < path.length; i++) {
+						SortedTreeClassNode next = null;
+						for (int j = 0; j < current.getChildCount(); j++) {
+
+							SortedTreeClassNode child = (SortedTreeClassNode) current.getChildAt(j);
+							if (child.getText().equals(path[i])) {
+								next = child;
+								break;
+							}
+						}
+						if (next == null) {
+							if (i + 1 >= path.length) { // last one
+								next = new SortedTreeClassNode(classes.get(e));
+							} else {
+								next = new SortedTreeClassNode(path[i]);
+							}
+							current.add(next);
+						}
+						current = next;
+					}
+					fileNum++;
+				}
+				jf.close();
+				root.sort();
+				model.reload();
+				ClassTree.this.repaint();
+			} catch (IOException e) {
+				e.printStackTrace();
 			}
+			progress.setProgress(100);
+			progress.setText(Translations.get("Finished loading!"));
+			ThreadUtils.sleepSafely(500);
+			progress.setVisible(false);
 		});
 		loader.setDaemon(true);
 		loader.start();

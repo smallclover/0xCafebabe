@@ -13,6 +13,9 @@ import com.alee.laf.window.WebDialog;
 import me.nov.cafebabe.Cafebabe;
 import me.nov.cafebabe.translations.Translations;
 
+/**
+ * 偏好设置弹窗
+ */
 public class PreferencesDialog extends WebDialog {
 	private static final long serialVersionUID = 1L;
 
@@ -24,13 +27,17 @@ public class PreferencesDialog extends WebDialog {
 		this.initBounds();
 		this.setTitle(Translations.get("Preferences"));
 		this.setIconImage(Cafebabe.gui.getIconImage());
+		// 默认关闭事件
 		this.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		this.setLayout(new BorderLayout());
 		try {
+			// 默认位置（Center） 选项卡切换和内容
 			this.add(new PreferencesPane());
 		} catch (Exception e1) {
 			e1.printStackTrace();
 		}
+
+		// 南部 close按钮
 		JPanel buttons = new JPanel(new FlowLayout(4));
 		this.add(buttons, BorderLayout.SOUTH);
 
@@ -39,6 +46,7 @@ public class PreferencesDialog extends WebDialog {
 		close.addActionListener(e -> {
 			setVisible(false);
 		});
+		// 设置组件的位置，getParent使它的位置相对父亲窗口位置
 		setLocationRelativeTo(getParent());
 		this.setVisible(true);
 	}

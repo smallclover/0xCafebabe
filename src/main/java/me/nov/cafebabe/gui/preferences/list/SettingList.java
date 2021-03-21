@@ -15,6 +15,9 @@ import com.alee.extended.list.WebCheckBoxList;
 import me.nov.cafebabe.gui.node.SettingNode;
 import me.nov.cafebabe.setting.Setting;
 
+/**
+ * 可配置项列表的容器
+ */
 public class SettingList extends WebCheckBoxList {
 	private static final long serialVersionUID = 1L;
 
@@ -35,12 +38,14 @@ public class SettingList extends WebCheckBoxList {
 				if (index != -1) {
 					CheckBoxCellData checkbox = (CheckBoxCellData) getModel().getElementAt(index);
 					SettingNode sn = (SettingNode) checkbox.getUserObject();
+					// 如果之前时check 则变成not check，反之亦然
 					checkbox.invertSelection();
 					repaint();
 					sn.setUserSelected(checkbox.isSelected());
 				}
 			}
 		});
+		// 单选
 		setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
 	}
